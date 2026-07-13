@@ -35,12 +35,13 @@ public abstract class ChatScreenMixin extends Screen {
 
     @Inject(method = "init", at = @At("TAIL"))
     protected void OnInit(CallbackInfo ci) {
+
         emojiPanel = new VortexEmojiPanel(text -> {
             if (this.input != null) {
                 this.input.insertText(text);
             }
         });
-        emojiPanel.init(this.width, this.height, this::addRenderableWrapper);
+        emojiPanel.init(this.width, this.height - VortexEmojiPanel.getMargin() - this.input.getHeight(), this::addRenderableWrapper);
     }
 
     @Override

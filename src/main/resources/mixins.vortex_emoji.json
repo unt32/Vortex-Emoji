@@ -6,7 +6,10 @@
     "refmap": "mixins.vortex_emoji.refmap.json",
     "mixins": [
         "StringRenderOutputMixin",
-        "ChatScreenMixin"
+        "ChatScreenMixin",
+        "AbstractSignEditScreenMixin",
+        "SignBlockEntityMixin",
+        "SignRendererMixin"
     ],
     "injectors": {
         "defaultRequire": 1

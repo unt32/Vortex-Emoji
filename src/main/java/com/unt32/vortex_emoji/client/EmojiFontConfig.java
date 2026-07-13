@@ -28,8 +28,8 @@ public final class EmojiFontConfig {
     private final Tooltip[] KEY_TOOLTIPS;
 
     public EmojiFontConfig() {
-        this.EMOJI_KEY_COUNT = loadEmojiKeyCount();
         this.KEY_TOOLTIPS = loadTooltips();
+        this.EMOJI_KEY_COUNT = loadEmojiKeyCount();
     }
 
     public int emoji_key_count() {

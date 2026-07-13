@@ -14,23 +14,22 @@ import net.minecraft.network.chat.Component;
 
 public class VortexEmojiPanel {
 
-    private static final int BUTTON_WIDTH = 14;
+    private static final int BUTTON_WIDTH = 20;
     private static final int BUTTON_HEIGHT = BUTTON_WIDTH;
-    private static final int PADDING = 2;
-    private static final int MARGIN = 2;
-    private static final int INPUT_HEIGHT = 12;
-    private static final int COLUMN_COUNT = 7;
-    private static final int PANEL_BACKGROUND_COLOR = 0xDD000000;
-    private static final int BUTTON_HOVER_COLOR = 0xAAFFFFFF;
-    private static final int BUTTON_BACKGROUND_COLOR = 0x00000000;
-    private static final int TOGGLE_OPEN_COLOR = 0xBB660000;
-    private static final int TOGGLE_CLOSED_COLOR = 0xBB000066;
-    private static final int TEXT_COLOR = 0xFFFFFFFF;
     private static final int TEXT_HEIGHT = 8;
 
-    private static final int TOGGLE_KEY_INDEX = 0;
+    private static final int PADDING = 2;
+    private static final int MARGIN = 2;
+
+    private static final int COLUMN_COUNT = 7;
+
+    private static final int PANEL_BACKGROUND_COLOR = 0xDD000000;
+    private static final int BUTTON_HOVER_COLOR = 0x77FFFFFF;
+    private static final int BUTTON_BACKGROUND_COLOR = 0x00000000;
+    private static final int TEXT_COLOR = 0xFFFFFFFF;
 
     private static final EmojiFontConfig emojiFontConfig = new EmojiFontConfig();
+    private static final int TOGGLE_KEY_INDEX = 0;
 
     private final Consumer<String> insertText;
     private final List<AbstractWidget> keyboardWidgets = new ArrayList<>();
@@ -42,6 +41,10 @@ public class VortexEmojiPanel {
 
     public VortexEmojiPanel(Consumer<String> insertText) {
         this.insertText = insertText;
+    }
+
+    public static int getMargin() {
+        return MARGIN;
     }
 
     public void init(int screenWidth, int screenHeight, Consumer<AbstractWidget> widgetConsumer) {
@@ -74,7 +77,7 @@ public class VortexEmojiPanel {
 
         gridLayout.arrangeElements();
         gridLayout.setX(screenWidth - this.gridLayout.getWidth() - PADDING - MARGIN);
-        gridLayout.setY(screenHeight - this.gridLayout.getHeight() - PADDING - 2 * MARGIN - INPUT_HEIGHT);
+        gridLayout.setY(screenHeight - this.gridLayout.getHeight() - PADDING - MARGIN);
 
         backgroundWidget = new PanelBackgroundWidget(gridLayout.getX() - PADDING, gridLayout.getY() - PADDING,
                 gridLayout.getWidth() + PADDING * 2, gridLayout.getHeight() + PADDING * 2);
@@ -87,9 +90,9 @@ public class VortexEmojiPanel {
         });
 
         toggleButton = new CustomButton(screenWidth - BUTTON_WIDTH - MARGIN,
-                screenHeight - BUTTON_HEIGHT - 2 * MARGIN - INPUT_HEIGHT, BUTTON_WIDTH,
+                screenHeight - BUTTON_HEIGHT - MARGIN, BUTTON_WIDTH,
                 BUTTON_HEIGHT, Component.literal(key(TOGGLE_KEY_INDEX)), b -> toggleVisibility(!isVisible),
-                TOGGLE_CLOSED_COLOR, BUTTON_HOVER_COLOR);
+                PANEL_BACKGROUND_COLOR, BUTTON_HOVER_COLOR);
         widgetConsumer.accept(toggleButton);
 
         toggleVisibility(false);
@@ -97,7 +100,6 @@ public class VortexEmojiPanel {
 
     private void toggleVisibility(boolean visible) {
         isVisible = visible;
-        toggleButton.setUnhoveredColor(visible ? TOGGLE_OPEN_COLOR : TOGGLE_CLOSED_COLOR);
 
         if (backgroundWidget != null) {
             backgroundWidget.visible = visible;
@@ -121,12 +123,9 @@ public class VortexEmojiPanel {
             this.hovered = hovered;
         }
 
-        void setUnhoveredColor(int color) {
-            this.unhovered = color;
-        }
-
-        void setHoveredColor(int color) {
-            this.hovered = color;
+        @Override
+        public boolean isFocused() {
+            return false;
         }
 
         @Override
