@@ -1,7 +1,7 @@
 package com.unt32.vortex_emoji;
 
-import net.minecraft.client.Minecraft;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -9,12 +9,11 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 public class VortexEmojiMod {
     public static final String MODID = "vortex_emoji";
 
-
     public VortexEmojiMod(FMLJavaModLoadingContext context) {
-        context.getModEventBus().addListener(this::onClientSetup);
-    }
+        IEventBus modEventBus = context.getModEventBus();
 
-    private void onClientSetup(FMLClientSetupEvent event) {
-       event.enqueueWork(() -> Minecraft.getInstance().options.chatLineSpacing().set(0.7D));
+        DistExecutor.safeRunForDist(
+                () -> () -> new ClientInit(modEventBus),
+                () -> () -> new ServerInit(modEventBus));
     }
 }

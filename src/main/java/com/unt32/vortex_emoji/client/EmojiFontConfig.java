@@ -8,6 +8,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -18,9 +21,9 @@ import net.minecraft.network.chat.Component;
 
 public final class EmojiFontConfig {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(EmojiFontConfig.class);
     private static final String DEFAULT_FONT_PATH = "/assets/minecraft/font/default.json";
     private static final String TOOLTIPS_PATH = "/assets/vortex_emoji/tooltips.txt";
-
 
     public static final Tooltip NULL_TOOLTIP = Tooltip.create(Component.literal(""));
 
@@ -30,6 +33,14 @@ public final class EmojiFontConfig {
     public EmojiFontConfig() {
         this.KEY_TOOLTIPS = loadTooltips();
         this.EMOJI_KEY_COUNT = loadEmojiKeyCount();
+
+        if (this.tooltips().length != this.emoji_key_count()) {
+            throw new IllegalStateException(
+                    "Emoji key/tooltips count mismatch (" + this.emoji_key_count() + " keys, "
+                            + this.tooltips().length + " tooltips)");
+        }
+
+        LOGGER.info("EmojiFontConfig initialized successfully. Emoji count: {}", this.emoji_key_count());
     }
 
     public int emoji_key_count() {
@@ -74,7 +85,8 @@ public final class EmojiFontConfig {
                 throw new IOException("Tooltip file not found: " + TOOLTIPS_PATH);
             }
 
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+            try (BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     line = line.trim();

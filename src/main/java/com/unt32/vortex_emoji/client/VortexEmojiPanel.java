@@ -3,6 +3,9 @@ package com.unt32.vortex_emoji.client;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+
+import com.unt32.vortex_emoji.ClientInit;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -28,7 +31,7 @@ public class VortexEmojiPanel {
     private static final int BUTTON_BACKGROUND_COLOR = 0x00000000;
     private static final int TEXT_COLOR = 0xFFFFFFFF;
 
-    private static final EmojiFontConfig emojiFontConfig = new EmojiFontConfig();
+    private static final EmojiFontConfig emojiFontConfig = ClientInit.emojiFontConfig;
     private static final int TOGGLE_KEY_INDEX = 0;
 
     private final Consumer<String> insertText;
@@ -48,11 +51,6 @@ public class VortexEmojiPanel {
     }
 
     public void init(int screenWidth, int screenHeight, Consumer<AbstractWidget> widgetConsumer) {
-        if (emojiFontConfig.tooltips().length != emojiFontConfig.emoji_key_count()) {
-            throw new IllegalStateException(
-                    "Emoji key/tooltips count mismatch (" + emojiFontConfig.emoji_key_count() + " keys, "
-                            + emojiFontConfig.tooltips().length + " tooltips)");
-        }
 
         isVisible = false;
 

@@ -17,6 +17,6 @@ public class SignRendererMixin {
     @Inject(method = "renderSignText", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/blockentity/SignRenderer;translateSignText(Lcom/mojang/blaze3d/vertex/PoseStack;ZLnet/minecraft/world/phys/Vec3;)V", shift = At.Shift.AFTER))
     private void moveSignTextLower(BlockPos pPos, SignText pText, PoseStack pPoseStack, MultiBufferSource pBufferSource,
             int pPackedLight, int pLineHeight, int pMaxLineWidth, boolean pIsFrontText, CallbackInfo ci) {
-        pPoseStack.translate(0.0F, 3.0F, 0.0F);
+        pPoseStack.translate(0.0F, 2.5F, 0.0F);
     }
 }
