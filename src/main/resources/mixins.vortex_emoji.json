@@ -9,7 +9,8 @@
         "ChatScreenMixin",
         "AbstractSignEditScreenMixin",
         "SignBlockEntityMixin",
-        "SignRendererMixin"
+        "SignRendererMixin",
+        "FontMixin"
     ],
     "injectors": {
         "defaultRequire": 1
