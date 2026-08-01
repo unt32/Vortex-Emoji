@@ -1,4 +1,4 @@
-package com.unt32.vortex_emoji.client;
+package com.unt32.vortex_emoji;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,47 +24,65 @@ public final class EmojiFontConfig {
     private static final String DEFAULT_FONT_PATH = "/assets/minecraft/font/default.json";
     private static final String TOOLTIPS_PATH = "/assets/vortex_emoji/tooltips.txt";
 
-    public static final Tooltip NULL_TOOLTIP = Tooltip.create(Component.literal(""));
+    public static final Component NULL_TOOLTIP = Component.literal("");
 
-    private final int EMOJI_KEY_COUNT;
-    private final Tooltip[] KEY_TOOLTIPS;
+    private final char[] EMOJI_KEYS;
+    private final Component[] KEY_TOOLTIPS;
 
     public EmojiFontConfig() {
         this.KEY_TOOLTIPS = loadTooltips();
-        this.EMOJI_KEY_COUNT = loadEmojiKeyCount();
+        this.EMOJI_KEYS = loadEmojiKeys();
 
-        if (this.tooltips().length != this.emoji_key_count()) {
+        if (this.tooltip_key_count() != this.emoji_key_count()) {
             throw new IllegalStateException(
                     "Emoji key/tooltips count mismatch (" + this.emoji_key_count() + " keys, "
-                            + this.tooltips().length + " tooltips)");
+                            + this.tooltip_key_count() + " tooltips)");
         }
 
         LOGGER.info("EmojiFontConfig initialized successfully. Emoji count: {}", this.emoji_key_count());
     }
 
     public int emoji_key_count() {
-        return EMOJI_KEY_COUNT;
+        return EMOJI_KEYS.length;
     }
 
-    public Tooltip[] tooltips() {
-        return KEY_TOOLTIPS.clone();
+    public int tooltip_key_count() {
+        return KEY_TOOLTIPS.length;
     }
 
-    private static int loadEmojiKeyCount() {
-        int count = 0;
+    public Component tooltip(int index) {
+        if (index < 0 || index >= this.tooltip_key_count()) {
+            throw new IllegalArgumentException("Invalid tooltip index: " + index);
+        }
+        return KEY_TOOLTIPS[index];
+    }
+
+    private char[] loadEmojiKeys() {
+        List<Character> charList = new ArrayList<>();
+
         try (InputStream is = EmojiFontConfig.class.getResourceAsStream(DEFAULT_FONT_PATH)) {
             if (is != null) {
                 JsonElement root = JsonParser.parseReader(new InputStreamReader(is, StandardCharsets.UTF_8));
-                JsonObject obj = root.getAsJsonObject();
-                JsonArray providers = obj.getAsJsonArray("providers");
-                if (providers != null && providers.size() > 0) {
-                    JsonObject provider = providers.get(0).getAsJsonObject();
-                    JsonArray chars = provider.getAsJsonArray("chars");
-                    if (chars != null) {
-                        for (JsonElement e : chars) {
-                            String s = e.getAsString();
-                            // count code points in the string (handles multiple codepoints per entry)
-                            count += s.codePointCount(0, s.length());
+                if (root != null && root.isJsonObject()) {
+                    JsonObject obj = root.getAsJsonObject();
+                    JsonArray providers = obj.getAsJsonArray("providers");
+
+                    if (providers != null) {
+                        for (JsonElement providerElement : providers) {
+                            if (!providerElement.isJsonObject())
+                                continue;
+
+                            JsonObject provider = providerElement.getAsJsonObject();
+                            JsonArray chars = provider.getAsJsonArray("chars");
+
+                            if (chars != null) {
+                                for (JsonElement e : chars) {
+                                    String s = e.getAsString();
+                                    for (char c : s.toCharArray()) {
+                                        charList.add(c);
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -74,11 +91,16 @@ public final class EmojiFontConfig {
             ex.printStackTrace();
         }
 
-        return count;
+        char[] result = new char[charList.size()];
+        for (int i = 0; i < charList.size(); i++) {
+            result[i] = charList.get(i);
+        }
+
+        return result;
     }
 
-    private static Tooltip[] loadTooltips() {
-        List<Tooltip> tooltips = new ArrayList<>();
+    private static Component[] loadTooltips() {
+        List<Component> tooltips = new ArrayList<>();
 
         try (InputStream inputStream = EmojiFontConfig.class.getResourceAsStream(TOOLTIPS_PATH)) {
             if (inputStream == null) {
@@ -94,7 +116,7 @@ public final class EmojiFontConfig {
                         if ("null".equals(line)) {
                             tooltips.add(NULL_TOOLTIP);
                         } else {
-                            tooltips.add(Tooltip.create(Component.literal(line)));
+                            tooltips.add(Component.literal(line));
                         }
                     }
                 }
@@ -103,6 +125,17 @@ public final class EmojiFontConfig {
             throw new RuntimeException("Failed to load tooltips from " + TOOLTIPS_PATH, e);
         }
 
-        return tooltips.toArray(new Tooltip[0]);
+        return tooltips.toArray(new Component[0]);
+    }
+
+    public char key(int index) {
+        if (index < 0 || index >= this.emoji_key_count()) {
+            throw new IllegalArgumentException("Invalid key index: " + index);
+        }
+        return EMOJI_KEYS[index];
+    }
+
+    public String keyStr(int index) {
+        return String.valueOf(key(index));
     }
 }

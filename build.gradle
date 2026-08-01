@@ -7,7 +7,7 @@ plugins {
 }
 
 mod_license = "None"
-mod_version = "1.0.0"
+mod_version = "1.0.1"
 mod_id = "vortex_emoji"
 mod_name = "Vortex Emoji"
 mod_description = "Simple emoji mod for Vortex\nhttps://github.com/unt32/Vortex-Emoji"

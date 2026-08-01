@@ -15,6 +15,6 @@ public class ServerInit {
     }
 
     private void onCommonSetup(FMLCommonSetupEvent event) {
-        LOGGER.info("onCommonSetup called");
+        LOGGER.info("Dedicaded server setup called");
     }
 }

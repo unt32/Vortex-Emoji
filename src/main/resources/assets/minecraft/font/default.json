@@ -2,15 +2,299 @@
   "providers": [
     {
       "type": "bitmap",
-      "file": "vortex_emoji:font/emojis.png",
-      "ascent": 10,
+      "file": "vortex_emoji:item/000.png",
       "height": 12,
+      "ascent": 10,
       "chars": [
-        "\uE000\uE001\uE002\uE003\uE004\uE005\uE006\uE007",
-        "\uE008\uE009\uE00A\uE00B\uE00C\uE00D\uE00E\uE00F",
-        "\uE010\uE011\uE012\uE013\uE014\uE015\uE016\uE017",
-        "\uE018\uE019\uE01A\uE01B\uE01C\uE01D\uE01E\uE01F",
-        "\uE020\uE021\uE022\uE023\uE024\uE025\uE026\uE027"
+        ""
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "vortex_emoji:item/001.png",
+      "height": 12,
+      "ascent": 10,
+      "chars": [
+        ""
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "vortex_emoji:item/002.png",
+      "height": 12,
+      "ascent": 10,
+      "chars": [
+        ""
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "vortex_emoji:item/003.png",
+      "height": 12,
+      "ascent": 10,
+      "chars": [
+        ""
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "vortex_emoji:item/004.png",
+      "height": 12,
+      "ascent": 10,
+      "chars": [
+        ""
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "vortex_emoji:item/005.png",
+      "height": 12,
+      "ascent": 10,
+      "chars": [
+        ""
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "vortex_emoji:item/006.png",
+      "height": 12,
+      "ascent": 10,
+      "chars": [
+        ""
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "vortex_emoji:item/007.png",
+      "height": 12,
+      "ascent": 10,
+      "chars": [
+        ""
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "vortex_emoji:item/008.png",
+      "height": 12,
+      "ascent": 10,
+      "chars": [
+        ""
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "vortex_emoji:item/009.png",
+      "height": 12,
+      "ascent": 10,
+      "chars": [
+        ""
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "vortex_emoji:item/010.png",
+      "height": 12,
+      "ascent": 10,
+      "chars": [
+        ""
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "vortex_emoji:item/011.png",
+      "height": 12,
+      "ascent": 10,
+      "chars": [
+        ""
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "vortex_emoji:item/012.png",
+      "height": 12,
+      "ascent": 10,
+      "chars": [
+        ""
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "vortex_emoji:item/013.png",
+      "height": 12,
+      "ascent": 10,
+      "chars": [
+        ""
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "vortex_emoji:item/014.png",
+      "height": 12,
+      "ascent": 10,
+      "chars": [
+        ""
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "vortex_emoji:item/015.png",
+      "height": 12,
+      "ascent": 10,
+      "chars": [
+        ""
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "vortex_emoji:item/016.png",
+      "height": 12,
+      "ascent": 10,
+      "chars": [
+        ""
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "vortex_emoji:item/017.png",
+      "height": 12,
+      "ascent": 10,
+      "chars": [
+        ""
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "vortex_emoji:item/018.png",
+      "height": 12,
+      "ascent": 10,
+      "chars": [
+        ""
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "vortex_emoji:item/019.png",
+      "height": 12,
+      "ascent": 10,
+      "chars": [
+        ""
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "vortex_emoji:item/020.png",
+      "height": 12,
+      "ascent": 10,
+      "chars": [
+        ""
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "vortex_emoji:item/021.png",
+      "height": 12,
+      "ascent": 10,
+      "chars": [
+        ""
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "vortex_emoji:item/022.png",
+      "height": 12,
+      "ascent": 10,
+      "chars": [
+        ""
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "vortex_emoji:item/023.png",
+      "height": 12,
+      "ascent": 10,
+      "chars": [
+        ""
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "vortex_emoji:item/024.png",
+      "height": 12,
+      "ascent": 10,
+      "chars": [
+        ""
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "vortex_emoji:item/025.png",
+      "height": 12,
+      "ascent": 10,
+      "chars": [
+        ""
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "vortex_emoji:item/026.png",
+      "height": 12,
+      "ascent": 10,
+      "chars": [
+        ""
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "vortex_emoji:item/027.png",
+      "height": 12,
+      "ascent": 10,
+      "chars": [
+        ""
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "vortex_emoji:item/028.png",
+      "height": 12,
+      "ascent": 10,
+      "chars": [
+        ""
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "vortex_emoji:item/029.png",
+      "height": 12,
+      "ascent": 10,
+      "chars": [
+        ""
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "vortex_emoji:item/030.png",
+      "height": 12,
+      "ascent": 10,
+      "chars": [
+        ""
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "vortex_emoji:item/031.png",
+      "height": 12,
+      "ascent": 10,
+      "chars": [
+        ""
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "vortex_emoji:item/032.png",
+      "height": 12,
+      "ascent": 10,
+      "chars": [
+        ""
       ]
     }
   ]

@@ -12,6 +12,9 @@
         "SignRendererMixin",
         "FontMixin"
     ],
+    "mixins": [
+        "TextDisplayMixin"
+    ],
     "injectors": {
         "defaultRequire": 1
     }

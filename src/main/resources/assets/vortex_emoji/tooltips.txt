@@ -31,10 +31,3 @@ Press F
 Радуется
 Сигма
 Спит
-null
-null
-null
-null
-null
-null
-null

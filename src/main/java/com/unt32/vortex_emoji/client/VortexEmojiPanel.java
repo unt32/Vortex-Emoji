@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import com.unt32.vortex_emoji.ClientInit;
+import com.unt32.vortex_emoji.EmojiFontConfig;
+import com.unt32.vortex_emoji.VortexEmojiMod;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.layouts.GridLayout;
 import net.minecraft.client.gui.layouts.GridLayout.RowHelper;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -31,7 +33,7 @@ public class VortexEmojiPanel {
     private static final int BUTTON_BACKGROUND_COLOR = 0x00000000;
     private static final int TEXT_COLOR = 0xFFFFFFFF;
 
-    private static final EmojiFontConfig emojiFontConfig = ClientInit.emojiFontConfig;
+    private static final EmojiFontConfig emojiFontConfig = VortexEmojiMod.emojiFontConfig;
     private static final int TOGGLE_KEY_INDEX = 0;
 
     private final Consumer<String> insertText;
@@ -42,8 +44,13 @@ public class VortexEmojiPanel {
     private CustomButton toggleButton;
     private boolean isVisible;
 
-    public VortexEmojiPanel(Consumer<String> insertText) {
+    public VortexEmojiPanel(Consumer<String> insertText, boolean forceVisible) {
         this.insertText = insertText;
+        this.isVisible = forceVisible;
+    }
+
+    public VortexEmojiPanel(Consumer<String> insertText) {
+        this(insertText, false);
     }
 
     public static int getMargin() {
@@ -51,25 +58,22 @@ public class VortexEmojiPanel {
     }
 
     public void init(int screenWidth, int screenHeight, Consumer<AbstractWidget> widgetConsumer) {
-
-        isVisible = false;
-
         gridLayout = new GridLayout();
         gridLayout.defaultCellSetting().padding(0);
 
         RowHelper rowHelper = gridLayout.createRowHelper(COLUMN_COUNT);
 
-        for (int i = 1; i < emojiFontConfig.tooltips().length; i++) {
-            if (emojiFontConfig.tooltips()[i] == emojiFontConfig.NULL_TOOLTIP) {
+        for (int i = 1; i < emojiFontConfig.tooltip_key_count(); i++) {
+            if (emojiFontConfig.tooltip(i) == emojiFontConfig.NULL_TOOLTIP) {
                 continue;
             }
 
             final int index = i;
-            CustomButton button = new CustomButton(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT, Component.literal(key(index)),
+            CustomButton button = new CustomButton(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT, Component.literal(emojiFontConfig.keyStr(index)),
                     b -> {
-                        insertText.accept(key(index));
+                        insertText.accept(emojiFontConfig.keyStr(index));
                     }, BUTTON_BACKGROUND_COLOR, BUTTON_HOVER_COLOR);
-            button.setTooltip(emojiFontConfig.tooltips()[index]);
+            button.setTooltip(Tooltip.create(emojiFontConfig.tooltip(i)));
             rowHelper.addChild(button);
         }
 
@@ -89,11 +93,11 @@ public class VortexEmojiPanel {
 
         toggleButton = new CustomButton(screenWidth - BUTTON_WIDTH - MARGIN,
                 screenHeight - BUTTON_HEIGHT - MARGIN, BUTTON_WIDTH,
-                BUTTON_HEIGHT, Component.literal(key(TOGGLE_KEY_INDEX)), b -> toggleVisibility(!isVisible),
+                BUTTON_HEIGHT, Component.literal(emojiFontConfig.keyStr(TOGGLE_KEY_INDEX)), b -> toggleVisibility(!isVisible),
                 PANEL_BACKGROUND_COLOR, BUTTON_HOVER_COLOR);
         widgetConsumer.accept(toggleButton);
 
-        toggleVisibility(false);
+        toggleVisibility(isVisible);
     }
 
     private void toggleVisibility(boolean visible) {
@@ -160,12 +164,5 @@ public class VortexEmojiPanel {
         public boolean isMouseOver(double mouseX, double mouseY) {
             return false;
         }
-    }
-
-    private static String key(int index) {
-        if (index < 0 || index >= emojiFontConfig.emoji_key_count()) {
-            throw new IllegalArgumentException("Invalid key index: " + index);
-        }
-        return String.valueOf((char) ('\uE000' + index));
     }
 }
