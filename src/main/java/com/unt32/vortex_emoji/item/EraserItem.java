@@ -4,7 +4,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.Display;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.Item;
@@ -17,13 +17,9 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
-import com.unt32.vortex_emoji.VortexEmojiMod;
-import com.unt32.vortex_emoji.mixin.TextDisplayMixin;
+import com.unt32.vortex_emoji.entity.EmojiEntity;
 
 public class EraserItem extends Item {
-    private static final char EMOJI_START = VortexEmojiMod.emojiFontConfig.key(0);
-    private static final char EMOJI_END = VortexEmojiMod.emojiFontConfig
-            .key(VortexEmojiMod.emojiFontConfig.emoji_key_count() - 1);
 
     public EraserItem(Properties properties, char emojiChar) {
         super(properties);
@@ -45,27 +41,22 @@ public class EraserItem extends Item {
             endPosition = hitResult.getLocation();
         }
 
-        AABB searchBox = player.getBoundingBox().expandTowards(lookVector.scale(reachDistance)).inflate(0.1D);
+        AABB searchBox = player.getBoundingBox().expandTowards(lookVector.scale(reachDistance));
 
         EntityHitResult entityHitResult = ProjectileUtil.getEntityHitResult(level, player, eyePosition, endPosition,
-                searchBox, entity -> entity instanceof Display.TextDisplay && !entity.isSpectator());
+                searchBox, entity -> entity instanceof EmojiEntity);
 
         if (entityHitResult == null) {
             return InteractionResultHolder.fail(stack);
         }
 
-        Display.TextDisplay textDisplay = (Display.TextDisplay) entityHitResult.getEntity();
-        String text = ((TextDisplayMixin) textDisplay).callGetText().getString();
-
-        if (text.length() != 1 || text.charAt(0) < EMOJI_START || text.charAt(0) > EMOJI_END) {
-            return InteractionResultHolder.fail(stack);
-        }
+        EmojiEntity emojiEntity = (EmojiEntity) entityHitResult.getEntity();
 
         if (!level.isClientSide()) {
 
-            textDisplay.discard();
+            emojiEntity.remove(Entity.RemovalReason.KILLED);
 
-            level.playSound(null, textDisplay.getX(), textDisplay.getY(), textDisplay.getZ(),
+            level.playSound(null, emojiEntity.getX(), emojiEntity.getY(), emojiEntity.getZ(),
                     SoundEvents.SLIME_BLOCK_BREAK,
                     SoundSource.PLAYERS, 1.0F, 1.0F);
         }

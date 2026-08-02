@@ -1,9 +1,9 @@
 package com.unt32.vortex_emoji.item;
 
-import com.unt32.vortex_emoji.entity.EmojiEntitySpawner;
+import com.unt32.vortex_emoji.entity.EmojiEntity;
+import com.unt32.vortex_emoji.entity.ModEntities;
 
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -77,8 +77,12 @@ public class StickerItem extends Item {
                     break;
             }
 
-            EmojiEntitySpawner.spawnViaNbt((ServerLevel) level, hitLocation.x, hitLocation.y,
-                    hitLocation.z, yaw, pitch, EMOJI_CHAR);
+            EmojiEntity entity = ModEntities.EMOJI_ENTITY.get().create(level);
+            if (entity != null) {
+                entity.moveTo(hitLocation.x, hitLocation.y, hitLocation.z, yaw, pitch);
+                entity.setEmojiChar(EMOJI_CHAR);
+                level.addFreshEntity(entity);
+            }
 
             level.playSound(null, hitLocation.x, hitLocation.y, hitLocation.z, SoundEvents.SLIME_BLOCK_PLACE,
                     SoundSource.PLAYERS, 1.0F, 1.0F);

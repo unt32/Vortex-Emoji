@@ -15,7 +15,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
 
 public final class EmojiFontConfig {
@@ -137,5 +136,19 @@ public final class EmojiFontConfig {
 
     public String keyStr(int index) {
         return String.valueOf(key(index));
+    }
+
+    public int indexOfKey(char c) {
+        if (c < EMOJI_KEYS[0] || c > EMOJI_KEYS[EMOJI_KEYS.length - 1]) {
+            return -1;
+        }
+        return (int) (c - EMOJI_KEYS[0]);
+    }
+
+    public int indexOfKey(String s) {
+        if (s.length() != 1) {
+            return -1;
+        }
+        return indexOfKey(s.charAt(0));
     }
 }
