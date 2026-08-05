@@ -22,11 +22,11 @@ public class VortexEmojiMod {
 
     ModEntities.register(modEventBus);
     ModItems.register(modEventBus);
+    ModSounds.register(modEventBus);
     ModCreativeModTabs.register(modEventBus);
 
     modEventBus.addListener(this::addCreative);
 
-    
     DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> new ClientInit(modEventBus));
   }
 

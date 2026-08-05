@@ -1,0 +1,19 @@
+{
+  "vortex_sticker_place": {
+    "subtitle": "subtitles.vortex_emoji.vortex_sticker_place",
+    "sounds": [
+      "vortex_emoji:vortex_sticker_place1",
+      "vortex_emoji:vortex_sticker_place2",
+      "vortex_emoji:vortex_sticker_place3",
+      "vortex_emoji:vortex_sticker_place4"
+    ]
+  },
+  "vortex_sticker_tear": {
+    "subtitle": "subtitles.vortex_emoji.vortex_sticker_tear",
+    "sounds": [
+      "vortex_emoji:vortex_sticker_tear1",
+      "vortex_emoji:vortex_sticker_tear2",
+      "vortex_emoji:vortex_sticker_tear3"
+    ]
+  }
+}

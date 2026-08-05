@@ -1,5 +1,6 @@
 package com.unt32.vortex_emoji.item;
 
+import com.unt32.vortex_emoji.ModSounds;
 import com.unt32.vortex_emoji.entity.EmojiEntity;
 import com.unt32.vortex_emoji.entity.ModEntities;
 
@@ -18,80 +19,80 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 public class StickerItem extends Item {
-    private char EMOJI_CHAR;
+  private char EMOJI_CHAR;
 
-    public StickerItem(Properties properties, char emojiChar) {
-        super(properties);
-        EMOJI_CHAR = emojiChar;
+  public StickerItem(Properties properties, char emojiChar) {
+    super(properties);
+    EMOJI_CHAR = emojiChar;
+  }
+
+  @Override
+  public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+    ItemStack stack = player.getItemInHand(hand);
+
+    Vec3 eyePosition = player.getEyePosition();
+    Vec3 endPosition = eyePosition.add(player.getLookAngle().scale(4.0f));
+
+    BlockHitResult hitResult = level.clip(
+        new ClipContext(eyePosition, endPosition, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
+
+    if (hitResult.getType() == HitResult.Type.MISS) {
+      return InteractionResultHolder.fail(stack);
     }
 
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        ItemStack stack = player.getItemInHand(hand);
+    if (!level.isClientSide()) {
 
-        Vec3 eyePosition = player.getEyePosition();
-        Vec3 endPosition = eyePosition.add(player.getLookAngle().scale(4.0f));
+      Vec3 hitLocation = hitResult.getLocation();
+      Direction direction = hitResult.getDirection();
 
-        BlockHitResult hitResult = level.clip(
-                new ClipContext(eyePosition, endPosition, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
+      float yaw, pitch;
 
-        if (hitResult.getType() == HitResult.Type.MISS) {
-            return InteractionResultHolder.fail(stack);
-        }
+      switch (direction) {
+        case DOWN:
+          yaw = player.getYRot() - 180;
+          pitch = 90f;
+          break;
+        case UP:
+          yaw = player.getYRot() - 180;
+          pitch = -90f;
+          break;
+        case NORTH:
+          yaw = 180f;
+          pitch = 0f;
+          break;
+        case SOUTH:
+          yaw = 0f;
+          pitch = 0f;
+          break;
+        case WEST:
+          yaw = 90f;
+          pitch = 0f;
+          break;
+        case EAST:
+          yaw = -90f;
+          pitch = 0f;
+          break;
+        default:
+          yaw = player.getYRot() - 180;
+          pitch = -player.getXRot();
+          break;
+      }
 
-        if (!level.isClientSide()) {
+      EmojiEntity entity = ModEntities.EMOJI_ENTITY.get().create(level);
+      if (entity != null) {
+        entity.moveTo(hitLocation.x, hitLocation.y, hitLocation.z, yaw, pitch);
+        entity.setEmojiChar(EMOJI_CHAR);
+        level.addFreshEntity(entity);
+      }
 
-            Vec3 hitLocation = hitResult.getLocation();
-            Direction direction = hitResult.getDirection();
+      level.playSound(null, hitLocation.x, hitLocation.y, hitLocation.z, ModSounds.VORTEX_STICKER_PLACE.get(),
+          SoundSource.PLAYERS, 1.0F, 1.0F);
 
-            float yaw, pitch;
-
-            switch (direction) {
-                case DOWN:
-                    yaw = player.getYRot() - 180;
-                    pitch = 90f;
-                    break;
-                case UP:
-                    yaw = player.getYRot() - 180;
-                    pitch = -90f;
-                    break;
-                case NORTH:
-                    yaw = 180f;
-                    pitch = 0f;
-                    break;
-                case SOUTH:
-                    yaw = 0f;
-                    pitch = 0f;
-                    break;
-                case WEST:
-                    yaw = 90f;
-                    pitch = 0f;
-                    break;
-                case EAST:
-                    yaw = -90f;
-                    pitch = 0f;
-                    break;
-                default:
-                    yaw = player.getYRot() - 180;
-                    pitch = -player.getXRot();
-                    break;
-            }
-
-            EmojiEntity entity = ModEntities.EMOJI_ENTITY.get().create(level);
-            if (entity != null) {
-                entity.moveTo(hitLocation.x, hitLocation.y, hitLocation.z, yaw, pitch);
-                entity.setEmojiChar(EMOJI_CHAR);
-                level.addFreshEntity(entity);
-            }
-
-            level.playSound(null, hitLocation.x, hitLocation.y, hitLocation.z, SoundEvents.SLIME_BLOCK_PLACE,
-                    SoundSource.PLAYERS, 1.0F, 1.0F);
-
-            if (!player.getAbilities().instabuild) {
-                stack.shrink(1);
-            }
-        }
-
-        return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
+      if (!player.getAbilities().instabuild) {
+        stack.shrink(1);
+      }
     }
+
+    return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
+  }
 }
