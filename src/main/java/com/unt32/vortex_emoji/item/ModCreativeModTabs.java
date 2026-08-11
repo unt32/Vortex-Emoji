@@ -11,20 +11,20 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
 public class ModCreativeModTabs {
-    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister
-            .create(Registries.CREATIVE_MODE_TAB, VortexEmojiMod.MODID);
+  public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister
+      .create(Registries.CREATIVE_MODE_TAB, VortexEmojiMod.MODID);
 
-    public static final RegistryObject<CreativeModeTab> VORTEX_EMOJI_TAB = CREATIVE_MODE_TABS.register("vortex_emoji_tab",
-            () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModItems.ITEMS.getEntries().iterator().next().get()))
-                    .title(Component.translatable("creativetab.vortex_emoji_tab"))
-                    .displayItems((pParameters, pOutput) -> {
-                        for (var item : ModItems.ITEMS.getEntries()) {
-                            pOutput.accept(item.get());
-                        }
-                    })
-                    .build());
+  public static final RegistryObject<CreativeModeTab> VORTEX_EMOJI_TAB = CREATIVE_MODE_TABS.register("vortex_emoji_tab",
+      () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModItems.getStickerById(12)))
+          .title(Component.translatable("creativetab.vortex_emoji_tab"))
+          .displayItems((pParameters, pOutput) -> {
+            for (var item : ModItems.ITEMS.getEntries()) {
+              pOutput.accept(item.get());
+            }
+          })
+          .build());
 
-    public static void register(IEventBus eventBus) {
-        CREATIVE_MODE_TABS.register(eventBus);
-    }
+  public static void register(IEventBus eventBus) {
+    CREATIVE_MODE_TABS.register(eventBus);
+  }
 }

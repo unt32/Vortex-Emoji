@@ -5,7 +5,6 @@ import com.unt32.vortex_emoji.entity.EmojiEntity;
 import com.unt32.vortex_emoji.entity.ModEntities;
 
 import net.minecraft.core.Direction;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -31,7 +30,7 @@ public class StickerItem extends Item {
     ItemStack stack = player.getItemInHand(hand);
 
     Vec3 eyePosition = player.getEyePosition();
-    Vec3 endPosition = eyePosition.add(player.getLookAngle().scale(4.0f));
+    Vec3 endPosition = eyePosition.add(player.getLookAngle().scale(player.getEntityReach()));
 
     BlockHitResult hitResult = level.clip(
         new ClipContext(eyePosition, endPosition, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
@@ -82,6 +81,7 @@ public class StickerItem extends Item {
       if (entity != null) {
         entity.moveTo(hitLocation.x, hitLocation.y, hitLocation.z, yaw, pitch);
         entity.setEmojiChar(EMOJI_CHAR);
+        entity.setFace(direction);
         level.addFreshEntity(entity);
       }
 

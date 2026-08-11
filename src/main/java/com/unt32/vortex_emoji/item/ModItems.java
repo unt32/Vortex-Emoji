@@ -12,32 +12,31 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class ModItems {
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS,
-            VortexEmojiMod.MODID);
+  public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS,
+      VortexEmojiMod.MODID);
 
-    public static List<RegistryObject<Item>> STICKER_ITEMS = new ArrayList<>();
+  private static List<RegistryObject<Item>> ITEMS_LIST;
 
-    static {
-        RegistryObject<Item> sticker = ITEMS.register("000", () -> new EraserItem(
-                new Item.Properties(),
-                VortexEmojiMod.emojiFontConfig.key(0)));
-        STICKER_ITEMS.add(sticker);
+  static {
+    for (int i = 1; i < VortexEmojiMod.emojiFontConfig.emoji_key_count(); i++) {
+      final int index = i;
+      String name = String.format("%03d", index);
 
-        int count = VortexEmojiMod.emojiFontConfig.emoji_key_count();
-        for (int i = 1; i < count; i++) {
-            final int index = i;
-            String name = String.format("%03d", index);
-
-            sticker = ITEMS.register(name,
-                    () -> new StickerItem(
-                            new Item.Properties(),
-                            VortexEmojiMod.emojiFontConfig.key(index)));
-
-            STICKER_ITEMS.add(sticker);
-        }
+      ITEMS.register(name,
+          () -> new StickerItem(
+              new Item.Properties(),
+              VortexEmojiMod.emojiFontConfig.key(index)));
     }
+    ITEMS_LIST = List.copyOf(ITEMS.getEntries());
+  }
 
-    public static void register(IEventBus eventBus) {
-        ITEMS.register(eventBus);
-    }
+  public static Item getStickerById(int id) {
+    if (id < 1 || id > ITEMS_LIST.size())
+      throw new IllegalArgumentException("Invalid sticker id: " + id + " (expected 1.." + ITEMS_LIST.size() + ")");
+    return ITEMS_LIST.get(id - 1).get();
+  }
+
+  public static void register(IEventBus eventBus) {
+    ITEMS.register(eventBus);
+  }
 }
